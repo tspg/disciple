@@ -1,0 +1,73 @@
+header#main {
+	color: #FFEBEE;
+	background: #D32F2F;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 50px;
+}
+
+header#main #title {
+	position: fixed;
+	top: 12px;
+	left: 10px;
+	height: 15px;
+	vertical-align: middle;
+	font-size: 16pt;
+	cursor: default;
+}
+
+header#main nav#left {
+	position: fixed;
+	top: 0;
+	left: 95px;
+}
+
+header#main nav#right {
+	position: fixed;
+	top: 0;
+	right: 5px;
+}
+
+header#main nav a, header#main nav a:visited {
+	display: inline-block;
+	height: 50px;
+	line-height: 50px;
+	color: #FFF;
+	text-decoration: none;
+	padding: 0px 10px;
+	transition: all .25s ease;
+}
+
+header#main nav a:hover {
+	background: #B71C1C;
+}
+
+#container {
+	position:absolute;
+	top: 70px;
+	left: 0;
+	width: 75%;
+	padding: 0 12.5%;
+}
+
+#container #content {
+	width: 100%;
+}
+
+footer#cfooter {
+	text-align: center;
+	font-size: 10pt;
+}
+
+.card {
+	background: #455A64;
+	width: 33.3%;
+	border: 1px solid #37474F;
+	border-radius: 3px;
+	padding: 10px 10px;
+	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25);
+	text-align: left;
+	margin: 0 33.3%;
+}

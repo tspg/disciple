@@ -1,0 +1,35 @@
+.centre {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 100%;
+	left: 0;
+	text-align: center;
+}
+
+.centre .card {
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+	background: #455A64;
+	width: 500px;
+	border: 1px solid #37474F;
+	border-radius: 3px;
+	padding: 10px 10px;
+	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25);
+	text-align: left;
+}
+
+code {
+	font-family: 'Roboto Mono', monospace;
+}
+
+.blank24 {
+	display: inline;
+	height: 24px;
+	width: 24px;
+}
+
+.stat {
+	display: inline;
+}
