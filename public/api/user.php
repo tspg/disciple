@@ -12,6 +12,13 @@
 	if ($call == 'register')
 	{
 		$username = $db->real_escape_string(api_checkarg_post_required('username', 'Username'));
+
+		$qUserExists = $db->query(sprintf("SELECT `id` FROM `users` WHERE `username`='%s'", $username));
+		if ($qUserExists->num_rows > 0)
+		{
+			api_error(SN_USER_ALREADY_EXISTS, "Account $username already exists.");
+		}
+
 		$password = api_checkarg_post_required('password', 'Password');
 		$email = $db->real_escape_string(api_checkarg_post_required('email', 'E-mail'));
 
@@ -27,8 +34,8 @@
 
 		$password_hashed = password_hash($password, PASSWORD_BCRYPT, array('cost' => 14));
 
-		$db->query(sprintf("INSERT INTO users (username, password, email, serverlimit) VALUES ('%s', '%s', '%s', %d)",
-							$username, $password, $email, disciple_json()->serverlimit));
+		$db->query(sprintf("INSERT INTO `users` (username, password, email, serverlimit) VALUES ('%s', '%s', '%s', %d)",
+							$username, $password_hashed, $email, disciple_json()->serverlimit));
 
 		echo 1;
 	}

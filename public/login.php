@@ -15,6 +15,10 @@
 					{
 						echo "<div class='submit-err'>User '" . $_GET['nouser'] . "' was not found.</div>";
 					}
+					elseif (isset($_GET['badpass']))
+					{
+						echo "<div class='submit-err'>Invalid password.</div>";
+					}
 					elseif (isset($_GET['fromreg']))
 					{
 						echo "<div class='submit-err' style='color:#FFF;'>Welcome, " . $_GET['fromreg'] . "! You may log in below.</div>";

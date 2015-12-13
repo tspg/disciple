@@ -6,7 +6,7 @@
 	$db = getsql();
 
 	$username = $db->real_escape_string(api_checkarg_post_required('user', 'username'));
-	$password = $db->real_escape_string(api_checkarg_post_required('pass', 'username'));
+	$password = api_checkarg_post_required('pass', 'password');
 
 	$qForUser = $db->query("SELECT * FROM `users` WHERE `username`='" . $username . "'");
 	if ($qForUser->num_rows < 1)
