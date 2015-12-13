@@ -20,7 +20,7 @@ input[type='button']:hover, input[type='submit']:hover {
 	border-color: #1976D2;
 }
 
-input[type='text'], input[type='password'], textarea {
+input[type='text'], input[type='password'], input[type='email'], textarea {
 	font-family: 'Roboto', sans-serif;
 	border: none;
 	border-bottom: 4px solid rgba(255, 255, 255, 0.25);
@@ -34,7 +34,7 @@ input[type='text'], input[type='password'], textarea {
 	color: #ECEFF1;
 }
 
-input[type='text']:focus, input[type='password']:focus, textarea:focus {
+input[type='text']:focus, input[type='password']:focus, input[type='email']:focus, textarea:focus {
 	border-bottom: 4px solid #FF5722;
 	outline: none;
 	background: #FBE9E7;

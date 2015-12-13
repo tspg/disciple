@@ -8,7 +8,6 @@
 		<h1>Log in to <?=disciple_json()->site_name;?></h1>
 		<div style='text-align: center;'>
 			<div class='card'>
-				<h3>Welcome to <?=disciple_json()->site_name;?></h1>
 				<?php
 					// Handle errors that may have been sent back from api/login.php
 

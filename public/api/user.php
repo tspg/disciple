@@ -1,17 +1,19 @@
 <?php
-	include realpath(dirname(__FILE__)) . '/../../common/errors.php';
+	include dirname(dirname(dirname(__FILE__))) . '/common/config.php';
 	include 'apishared.php';
+
+	$db = getsql();
 
 	define('USERNAME_MAX_LENGTH', 20);
 	define('PASSWORD_MAX_LENGTH', 70);
 
-	$call = api_checkarg('fn');
+	$call = api_checkarg_post('fn');
 
 	if ($call == 'register')
 	{
-		$username = api_checkarg_post('username');
-		$password = api_checkarg_post('password');
-		$email = api_checkarg_post('email');
+		$username = $db->real_escape_string(api_checkarg_post_required('username', 'Username'));
+		$password = api_checkarg_post_required('password', 'Password');
+		$email = $db->real_escape_string(api_checkarg_post_required('email', 'E-mail'));
 
 		if (strlen($username) > USERNAME_MAX_LENGTH)
 		{
@@ -23,6 +25,11 @@
 			api_error(SN_PASSWORD_TOO_LONG, sprintf('Your password is too long. The maximum length is %d characters.', PASSWORD_MAX_LENGTH));
 		}
 
-		$password_hashed = password_hash($password);
+		$password_hashed = password_hash($password, PASSWORD_BCRYPT, array('cost' => 14));
+
+		$db->query(sprintf("INSERT INTO users (username, password, email, serverlimit) VALUES ('%s', '%s', '%s', %d)",
+							$username, $password, $email, disciple_json()->serverlimit));
+
+		echo 1;
 	}
 ?>

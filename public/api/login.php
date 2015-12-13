@@ -1,8 +1,9 @@
 <?php
 	include 'apishared.php';
 	include dirname(dirname(dirname(__FILE__))) . '/common/config.php';
+	include dirname(dirname(dirname(__FILE__))) . '/common/session.php';
 
-	$db = new mysqli($disciple_config['mysql_hostname'], $disciple_config['mysql_user'], $disciple_config['mysql_pass'], $disciple_config['mysql_database']);
+	$db = getsql();
 
 	$username = $db->real_escape_string(api_checkarg_post_required('user', 'username'));
 	$password = $db->real_escape_string(api_checkarg_post_required('pass', 'username'));
@@ -12,4 +13,15 @@
 	{
 		Header("Location: /login?nouser=" . $username);
 	}
+
+	$o = $qForUser->fetch_object();
+	if (!password_verify($password, $o->password))
+	{
+		Header("Location: /login?badpass");
+	}
+
+	$_SESSION['user'] = $o->username;
+	$_SESSION['id'] = $o->id;
+
+	Header("Location: /");
 ?>

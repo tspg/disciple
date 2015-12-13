@@ -41,6 +41,12 @@ echo 'after';
 			<br />
 			<input type='number' id='serverlimit' value='4' required />
 
+			<br />
+			What should the username and password for the "root" user (the user that can do basically anything) be?
+			<br />
+			<input type='text' id='rootuser' placeholder='Username' required />
+			<input type='password' id='rootpass' placeholder='Password' required />
+
 			<br /> <br />
 			<input type='button' value='Submit' id='sendbutton' onclick='post_config();'/>
 			<div id='submit-err'></div>
