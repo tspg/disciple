@@ -28,12 +28,19 @@
 		protected $stdoutfile;
 		protected $stderrfile;
 
+		protected $running			= 	false;
+
+		protected $process;
+
 		function __construct(
 								$wads, $optwads, $iwad, $hostname,
 								$protected, $owner, $gamemode, $config,
 								$skill, $stdata, $instagib, $buckshot,
 								$dmflags, $dmflags2, $zadmflags, $compatflags,
-								$zacompatflags
+								$zacompatflags,
+
+								// Optional stuff
+								$id 			= null
 							)
 		{
 			$this->wads				= $wads;
@@ -54,7 +61,14 @@
 			$this->compatflags 		= $compatflags;
 			$this->zacompatflags	= $zacompatflags;
 
-			$this->id 				= sha256(time() + $owner + $skill + ($stdata ? 1 : 0) + ($instagib ? 1 : 0) + ($buckshot ? 1 : 0)  + $dmflags + $dmflags2 + $zadmflags + $compatflags + $zacompatflags + mt_rand());
+			if ($id == null)
+			{
+				$this->id 				= sha256(time() + $owner + $skill + ($stdata ? 1 : 0) + ($instagib ? 1 : 0) + ($buckshot ? 1 : 0)  + $dmflags + $dmflags2 + $zadmflags + $compatflags + $zacompatflags + mt_rand());
+			}
+			else
+			{
+				$this->id 			=  $id;
+			}
 
 			$this->stdinfile 		= sprintf("%s/%s-stdin", disciple_json()->serverdata, $this->id);
 			$this->stdoutfile 		= sprintf("%s/%s-stdout.log", disciple_json()->serverdata, $this->id);
@@ -82,7 +96,8 @@
 				$d->dmflags2,
 				$d->zadmflags,
 				$d->compatflags,
-				$d->zacompatflags
+				$d->zacompatflags,
+				$d->id
 			);
 		}
 
@@ -105,10 +120,101 @@
 				'dmflags2'			=>	$this->dmflags2,
 				'zadmflags'			=>	$this->zadmflags,
 				'compatflags'		=>	$this->compatflags,
-				'zacompatflags'		=>	$this->zacompatflags
+				'zacompatflags'		=>	$this->zacompatflags,
+				'id'				=>	$this->id,
+
+				// We export the stdXfiles for ease of access.
+				// We don't import them as they're generated with the ID.
+				'stdoutfile'		=> 	$this->stdoutfile,
+				'stderrfile'		=>	$this->stderrfile,
+				'stdinfile'			=>	$this->stdinfile
 			);
 
 			return json_encode($a);
+		}
+
+		protected function generate_command_line()
+		{
+			$out = disciple_json()->binary;
+			$out .= ' ';
+
+			foreach ($this->wads as $w)
+			{
+				$out .= sprintf('-file "%s" ', $w);
+			}
+
+			foreach ($this->optwads as $w)
+			{
+				$out .= sprintf('-optfile "%s" ', $w);
+			}
+
+			$out .= sprintf('-iwad "%s" ', $this->iwad);
+			$out .= sprintf('+sv_hostname "%s %s" ', disciple_json()->hostname_prefix, $this->hostname);
+
+			$gamemode = 'cooperative';
+
+			// Gamemode name to CVar
+			switch ($this->gamemode)
+			{
+				case 'deathmatch':
+				case 'terminator':
+				case 'teampossession':
+				case 'skulltag':
+				case 'duel':
+				case 'teamgame':
+				case 'domination':
+				case 'survival':
+				case 'invasion':
+				case 'cooperative':
+				case 'ctf':
+					$gamemode = $this->gamemode;
+					break;
+
+				case 'teamdm':
+					$gamemode = 'teamplay';
+					break;
+
+				case 'lms':
+					$gamemode = 'lastmanstanding';
+					break;
+
+				case 'teamlms':
+					$gamemode = 'teamlastmanstanding';
+					break;
+
+				case 'oneflag':
+					$gamemode = 'oneflagctf';
+					break;
+
+				default:
+					$gamemode = 'cooperative';
+					break;
+			}
+
+			$out .= sprintf("+%s true ", $gamemode);
+			$out .= sprintf("+skill %d ", $skill);
+
+			$out .= sprintf("+instagib %d ", ($instagib ? 1 : 0));
+			$out .= sprintf("+buckshot %d ", ($buckshot ? 1 : 0));
+
+			$out .= sprintf("+dmflags %d ", $dmflags);
+			$out .= sprintf("+dmflags2 %d ", $dmflags2);
+			$out .= sprintf("+zadmflags %d ", $zadmflags);
+			$out .= sprintf("+compatflags %d ", $compatflags);
+			$out .= sprintf("+zacompatflags %d ", $zacompatflags);
+
+			return $out;
+		}
+
+		public function start()
+		{
+			$dsp = array(
+				0 => array('file', $this->stdinfile, 'a'),
+				1 => array('file', $this->stdoutfile, 'a'),
+				2 => array('file', $this->stderrfile, 'a'),
+			);
+
+			$this->process = proc_open($this->generate_command_line(), $dsp, $pipes);
 		}
 	}
 ?>

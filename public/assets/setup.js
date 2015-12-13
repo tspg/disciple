@@ -104,7 +104,8 @@ function post_config() {
 		'serverlimit':		$('#serverlimit').val(),
 		'rootuser':			$('#rootuser').val(),
 		'rootpass':			$('#rootpass').val(),
-		'serverdata':		$('#serverdata').val()
+		'serverdata':		$('#serverdata').val(),
+		'hostpref':			$('#hostpref').val()
 	})
 	.done(function(d) {
 		if (d == '1') {

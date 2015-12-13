@@ -10,13 +10,15 @@
 	$serverdata = intval(api_checkarg_post_required('serverdata', 'Server data location'));
 	$rootuser = api_checkarg_post_required('rootuser', 'Root username');
 	$rootpass = api_checkarg_post_required('rootpass', 'Root password');
+	$hostpref = api_checkarg_post_required('hostpref', 'Server hostname prefix');
 
 	$out = array(
 		'site_name'			=>	$site_name,
 		'site_shortname' 	=>  $site_shortname,
 		'main_binary'		=>	$main_version_binary,
 		'serverlimit'		=> 	$serverlimit,
-		'serverdata'		=> 	$serverdata
+		'serverdata'		=> 	$serverdata,
+		'hostname_prefix'	=> 	$hostpref
 	);
 
 	$file = dirname(dirname(dirname(__FILE__))) . '/config/config.json';

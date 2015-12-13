@@ -47,6 +47,11 @@ echo 'after';
 			<input type='text' id='serverdata' required />
 
 			<br />
+			What should be the server hostname prefix be?
+			<br />
+			<input type='text' id='hostpref' required />
+
+			<br />
 			What should the username and password for the "root" user (the user that can do basically anything) be?
 			<br />
 			<input type='text' id='rootuser' placeholder='Username' required />
