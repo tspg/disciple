@@ -87,3 +87,13 @@ h3 {
 code, pre {
 	font-family: 'Roboto Mono', monospace;
 }
+
+a:link, a:visited {
+	color: #E57373;
+	text-decoration: none;
+	transition: color .25s ease;
+}
+
+a:hover {
+	color: #FFCDD2;
+}

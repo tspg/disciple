@@ -34,6 +34,7 @@
 
 			<nav id='left'>
 				<a href='/'>Home</a>
+				<a href='/wads'>WADs</a>
 			</nav>
 			<nav id='right'>";
 

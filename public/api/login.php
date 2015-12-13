@@ -12,16 +12,19 @@
 	if ($qForUser->num_rows < 1)
 	{
 		Header("Location: /login?nouser=" . $username);
+		exit();
 	}
 
 	$o = $qForUser->fetch_object();
-	if (!password_verify($password, $o->password))
+	$v = password_verify($password, $o->password);
+	if (!$v)
 	{
 		Header("Location: /login?badpass");
+		exit();
 	}
 
 	$_SESSION['user'] = $o->username;
 	$_SESSION['id'] = $o->id;
 
-	Header("Location: /");
+	//Header("Location: /");
 ?>
