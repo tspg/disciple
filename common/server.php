@@ -257,6 +257,19 @@
 								$this->owner, $db->real_escape_string($this->to_json(true))));
 		}
 
+		public function send($command)
+		{
+			$f = fopen($this->stdinfile, 'w');
+			fwrite($f, $command . '\n');
+			fclose($f);
+		}
+
+		public function kill($reason = "Stopped by server owner")
+		{
+			$this->send(sprintf('kickall "%s"', reason));
+			$this->send('exit');
+		}
+
 		public static function get_by_id($sid)
 		{
 			$q = $db->query(sprintf("SELECT * FROM `servers` WHERE sid='%s'",
