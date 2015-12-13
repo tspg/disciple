@@ -266,7 +266,7 @@
 
 		public function kill($reason = "Stopped by server owner")
 		{
-			$this->send(sprintf('kickall "%s"', reason));
+			$this->send(sprintf('kickall "%s"', $reason));
 			$this->send('exit');
 		}
 
