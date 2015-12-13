@@ -273,6 +273,7 @@
 
 		public static function get_by_id($sid)
 		{
+			$db = getsql();
 			$q = $db->query(sprintf("SELECT * FROM `servers` WHERE sid='%s'",
 									$db->real_escape_string($sid)));
 
@@ -283,6 +284,7 @@
 
 		public static function get_user_servers($uid)
 		{
+			$db = getsql();
 			$q = $db->query(sprintf("SELECT * FROM `servers` WHERE owner='%d'",
 									$db->real_escape_string($uid)));
 
@@ -298,6 +300,7 @@
 
 		public static function get_user_saves($uid)
 		{
+			$db = getsql();
 			$q = $db->query(sprintf("SELECT * FROM `savedservers` WHERE owner='%d'",
 									$db->real_escape_string($uid)));
 

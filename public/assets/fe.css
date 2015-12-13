@@ -71,3 +71,29 @@ footer#cfooter {
 	text-align: left;
 	margin: 0 33.3%;
 }
+
+#serversbox {
+	width: 100%;
+	padding: 2px;
+	border: 1px solid #546E7A;
+	background: #546E7A;
+	border-radius: 3px;
+}
+
+#serverboxhead {
+	position: relative;
+	width: 100%;
+}
+
+#serverboxhead input[type='button'] {
+	height: 22px;
+	padding: 3px 15px;
+	margin-right: 0;
+	margin-left: 2px;
+}
+
+#serverboxhead #right {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
