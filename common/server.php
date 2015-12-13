@@ -192,16 +192,16 @@
 			}
 
 			$out .= sprintf("+%s true ", $gamemode);
-			$out .= sprintf("+skill %d ", $skill);
+			$out .= sprintf("+skill %d ", $this->skill);
 
-			$out .= sprintf("+instagib %d ", ($instagib ? 1 : 0));
-			$out .= sprintf("+buckshot %d ", ($buckshot ? 1 : 0));
+			$out .= sprintf("+instagib %d ", ($this->instagib ? 1 : 0));
+			$out .= sprintf("+buckshot %d ", ($this->buckshot ? 1 : 0));
 
-			$out .= sprintf("+dmflags %d ", $dmflags);
-			$out .= sprintf("+dmflags2 %d ", $dmflags2);
-			$out .= sprintf("+zadmflags %d ", $zadmflags);
-			$out .= sprintf("+compatflags %d ", $compatflags);
-			$out .= sprintf("+zacompatflags %d ", $zacompatflags);
+			$out .= sprintf("+dmflags %d ", $this->dmflags);
+			$out .= sprintf("+dmflags2 %d ", $this->dmflags2);
+			$out .= sprintf("+zadmflags %d ", $this->zadmflags);
+			$out .= sprintf("+compatflags %d ", $this->compatflags);
+			$out .= sprintf("+zacompatflags %d ", $this->zacompatflags);
 
 			return $out;
 		}
