@@ -33,15 +33,18 @@
 
 		protected $process;
 
+		protected $db				= 	getsql();
+
 		function __construct(
 								$binary, $wads, $optwads, $iwad, $hostname,
-								$protected, $owner, $gamemode, $config,
-								$skill, $stdata, $instagib, $buckshot,
-								$dmflags, $dmflags2, $zadmflags, $compatflags,
+								$protected, $gamemode, $config, $skill,
+								$stdata, $instagib, $buckshot, $dmflags,
+								$dmflags2, $zadmflags, $compatflags,
 								$zacompatflags,
 
 								// Optional stuff
-								$id 			= null
+								$id 			= null,
+								$owner			= -1
 							)
 		{
 			$this->binary			= $binary;
@@ -81,6 +84,12 @@
 		{
 			$d = json_decode($json);
 
+			if ($d->save)
+			{
+				$id = null;
+				$owner = -1;
+			}
+
 			return new Server(
 				$d->binary,
 				$d->wads,
@@ -88,7 +97,6 @@
 				$d->iwad,
 				$d->hostname,
 				$d->protected,
-				$d->owner,
 				$d->gamemode,
 				$d->config,
 				$d->skill,
@@ -100,20 +108,21 @@
 				$d->zadmflags,
 				$d->compatflags,
 				$d->zacompatflags,
-				$d->id
+				$id,
+				$owner
 			);
 		}
 
-		public function toJSON()
+		public function toJSON($save = false)
 		{
 			$a = array(
+				'save'				=> 	$save,
 				'binary'			=>  $this->binary,
 				'wads'				=>	$this->wads,
 				'optwads'			=>	$this->optwads,
 				'iwad'				=>	$this->iwad,
 				'hostname'			=> 	$this->hostname,
 				'protected'			=> 	$this->protected,
-				'owner'				=>	$this->owner,
 				'gamemode'			=>	$this->gamemode,
 				'config'			=>	$this->config,
 				'skill'				=>	$this->skill,
@@ -124,15 +133,22 @@
 				'dmflags2'			=>	$this->dmflags2,
 				'zadmflags'			=>	$this->zadmflags,
 				'compatflags'		=>	$this->compatflags,
-				'zacompatflags'		=>	$this->zacompatflags,
-				'id'				=>	$this->id,
+				'zacompatflags'		=>	$this->zacompatflags
+			);
+
+			if (!save)
+			{
+				$a['id']				=	$this->id;
 
 				// We export the stdXfiles for ease of access.
 				// We don't import them as they're generated with the ID.
-				'stdoutfile'		=> 	$this->stdoutfile,
-				'stderrfile'		=>	$this->stderrfile,
-				'stdinfile'			=>	$this->stdinfile
-			);
+				$a['stdoutfile']		= 	$this->stdoutfile;
+				$a['stderrfile']		=	$this->stderrfile;
+				$a['stdinfile']			=	$this->stdinfile;
+
+				$a['owner']				= 	$this->owner;
+			}
+		}
 
 			return json_encode($a);
 		}
@@ -222,6 +238,11 @@
 			);
 
 			$this->process = proc_open($this->generate_command_line(), $dsp, $pipes);
+		}
+
+		public function addToDatabase()
+		{
+			$db->query(sprintf("INSERT INTO servers "))
 		}
 	}
 ?>
