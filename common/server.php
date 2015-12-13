@@ -89,6 +89,11 @@
 				$id = null;
 				$owner = -1;
 			}
+			else
+			{
+				$id = $d->id;
+				$owner = $d->owner;
+			}
 
 			return new Server(
 				$d->binary,
@@ -133,7 +138,8 @@
 				'dmflags2'			=>	$this->dmflags2,
 				'zadmflags'			=>	$this->zadmflags,
 				'compatflags'		=>	$this->compatflags,
-				'zacompatflags'		=>	$this->zacompatflags
+				'zacompatflags'		=>	$this->zacompatflags,
+				'owner'				=>	$this->owner
 			);
 
 			if (!save)
@@ -145,8 +151,6 @@
 				$a['stdoutfile']		= 	$this->stdoutfile;
 				$a['stderrfile']		=	$this->stderrfile;
 				$a['stdinfile']			=	$this->stdinfile;
-
-				$a['owner']				= 	$this->owner;
 			}
 		}
 
