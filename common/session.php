@@ -27,16 +27,36 @@
 		}
 	}
 
+	if (!function_exists('user_info'))
+	{
+		function user_info($_id = 0)
+		{
+			$id = $_id;
+
+			if ($_id == 0 && is_authed())
+			{
+				$id = $_SESSION['id'];
+			}
+
+			if (!is_authed() && $id == 0)
+			{
+				return null;
+			}
+
+			$uinfq = getsql()->query("SELECT * FROM `users` WHERE `id`=" . $_SESSION['id']);
+
+			// Make sure to destroy our session if this user doesn't exist anymore.
+			if ($uinfq->num_rows == 0 && $id == $_SESSION['id'])
+			{
+				Header("Location: /logout?accdel");
+			}
+
+			return $uinfq->fetch_object();
+		}
+	}
+
 	if (is_authed())
 	{
-		$uinfq = getsql()->query("SELECT * FROM `users` WHERE `id`=" . $_SESSION['id']);
-
-		// Make sure to destroy our session if this user doesn't exist anymore.
-		if ($uinfq->num_rows == 0)
-		{
-			Header("Location: /logout?accdel");
-		}
-
-		$uinf = $uinfq->fetch_object();
+		$uinf = user_info();
 	}
 ?>

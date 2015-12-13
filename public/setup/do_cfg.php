@@ -1,13 +1,13 @@
 <?php
 	include 'postcfglock.php';
 	include dirname(dirname(__FILE__)) . '/api/apishared.php';
-	include dirname(dirname(__DIR__)) . '/config/config.php';
+	include dirname(dirname(__DIR__)) . '/common/config.php';
 
 	$site_name = api_checkarg_post_required('site_name', 'Site name');
 	$site_shortname = api_checkarg_post_required('site_shortname', 'Site short name');
 	$main_version_binary = api_checkarg_post_required('binary', 'Zandronum server binary location');
 	$serverlimit = intval(api_checkarg_post_required('serverlimit', 'Server limit'));
-	$serverdata = intval(api_checkarg_post_required('serverdata', 'Server data location'));
+	$serverdata = api_checkarg_post_required('serverdata', 'Server data location');
 	$rootuser = api_checkarg_post_required('rootuser', 'Root username');
 	$rootpass = api_checkarg_post_required('rootpass', 'Root password');
 	$hostpref = api_checkarg_post_required('hostpref', 'Server hostname prefix');
@@ -36,6 +36,9 @@
 						// We use a cost of 14 for the password hash to be compatible with BestBot.
 						password_hash($rootpass, PASSWORD_BCRYPT, array('cost' => 14))));
 
+	data_dir('/wads/');
+	symlink(data_dir('/wads/'), dirname(dirname(__FILE__)) . '/wads');
+	
 	Header("Content-Type: text/plain");
 	echo 1;
 ?>

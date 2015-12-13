@@ -7,6 +7,7 @@
 	define('SN_FAILED_FILE_WRITE', 6);
 	define('SN_API_CALL_EMPTY_PARAMETER', 7);
 	define('SN_USER_ALREADY_EXISTS', 8);
+	define('SN_FILE_EXISTS', 9);
 
 	$UL_UNREGISTERED = array('id' => 0, 'name' => 'Unregistered');
 	$UL_NORMAL = array('id' => 1, 'name' => 'Normal');
