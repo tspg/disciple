@@ -136,7 +136,7 @@
 		protected function generate_command_line()
 		{
 			$out = disciple_json()->binary;
-			$out .= ' ';
+			$out .= ' -host ';
 
 			foreach ($this->wads as $w)
 			{
