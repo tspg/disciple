@@ -3,7 +3,7 @@
 
 	class server
 	{
-		protected $binary			=	disciple_json()->main_binary;
+		protected $binary;
 		protected $wads 			= 	array();
 		protected $optwads			= 	array();
 		protected $iwad 			= 	'';
@@ -33,7 +33,7 @@
 
 		protected $process;
 
-		protected $db				= 	getsql();
+		protected $db;
 
 		function __construct(
 								$binary, $wads, $optwads, $iwad, $hostname,
@@ -78,6 +78,8 @@
 			$this->stdinfile 		= sprintf("%s/%s-stdin", disciple_json()->serverdata, $this->id);
 			$this->stdoutfile 		= sprintf("%s/%s-stdout.log", disciple_json()->serverdata, $this->id);
 			$this->stderrfile 		= sprintf("%s/%s-stderr.log", disciple_json()->serverdata, $this->id);
+
+			$this->db				= getsql();
 		}
 
 		public static function from_json($json)
@@ -152,7 +154,6 @@
 				$a['stderrfile']		=	$this->stderrfile;
 				$a['stdinfile']			=	$this->stdinfile;
 			}
-		}
 
 			return json_encode($a);
 		}
