@@ -3,6 +3,7 @@
 
 	class Server
 	{
+		protected $binary			=	disciple_json()->main_binary;
 		protected $wads 			= 	array();
 		protected $optwads			= 	array();
 		protected $iwad 			= 	'';
@@ -33,7 +34,7 @@
 		protected $process;
 
 		function __construct(
-								$wads, $optwads, $iwad, $hostname,
+								$binary, $wads, $optwads, $iwad, $hostname,
 								$protected, $owner, $gamemode, $config,
 								$skill, $stdata, $instagib, $buckshot,
 								$dmflags, $dmflags2, $zadmflags, $compatflags,
@@ -43,6 +44,7 @@
 								$id 			= null
 							)
 		{
+			$this->binary			= $binary;
 			$this->wads				= $wads;
 			$this->optwads			= $optwads;
 			$this->iwad				= $iwad;
@@ -80,6 +82,7 @@
 			$d = json_decode($json);
 
 			return new Server(
+				$d->binary,
 				$d->wads,
 				$d->optwads,
 				$d->iwad,
@@ -104,6 +107,7 @@
 		public function toJSON()
 		{
 			$a = array(
+				'binary'			=>  $this->binary,
 				'wads'				=>	$this->wads,
 				'optwads'			=>	$this->optwads,
 				'iwad'				=>	$this->iwad,
@@ -135,8 +139,9 @@
 
 		protected function generate_command_line()
 		{
-			$out = disciple_json()->binary;
-			$out .= ' -host ';
+			$out = $this->binary;
+			$out .= sprintf(' +set _sid %s ', $this->id);
+			$out .= '-host ';
 
 			foreach ($this->wads as $w)
 			{
