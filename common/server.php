@@ -1,7 +1,7 @@
 <?php
 	include 'config.php';
 
-	class Server
+	class server
 	{
 		protected $binary			=	disciple_json()->main_binary;
 		protected $wads 			= 	array();
