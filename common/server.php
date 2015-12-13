@@ -54,7 +54,7 @@
 			$this->compatflags 		= $compatflags;
 			$this->zacompatflags	= $zacompatflags;
 
-			$this->id 				= sha256(time() + $owner + $skill + ($stdata ? 1 : 0) + ($instagib ? 1 : 0) + ($buckshot ? 1 : 0)  + $dmflags + $dmflags2 + $zadmflags + $compatflags + $zacompatflags);
+			$this->id 				= sha256(time() + $owner + $skill + ($stdata ? 1 : 0) + ($instagib ? 1 : 0) + ($buckshot ? 1 : 0)  + $dmflags + $dmflags2 + $zadmflags + $compatflags + $zacompatflags + mt_rand());
 
 			$this->stdinfile 		= sprintf("%s/%s-stdin", disciple_json()->serverdata, $this->id);
 			$this->stdoutfile 		= sprintf("%s/%s-stdout.log", disciple_json()->serverdata, $this->id);
