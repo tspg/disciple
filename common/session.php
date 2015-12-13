@@ -34,7 +34,7 @@
 		// Make sure to destroy our session if this user doesn't exist anymore.
 		if ($uinfq->num_rows == 0)
 		{
-			Header("Location: /logout");
+			Header("Location: /logout?accdel");
 		}
 
 		$uinf = $uinfq->fetch_object();

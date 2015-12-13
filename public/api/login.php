@@ -26,5 +26,5 @@
 	$_SESSION['user'] = $o->username;
 	$_SESSION['id'] = $o->id;
 
-	//Header("Location: /");
+	Header("Location: /");
 ?>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: durian
--- Generation Time: Dec 13, 2015 at 02:42 PM
+-- Generation Time: Dec 13, 2015 at 05:41 PM
 -- Server version: 10.1.9-MariaDB-log
 -- PHP Version: 5.6.16
 
@@ -25,6 +25,8 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `savedservers`
 --
+-- Creation: Dec 13, 2015 at 02:21 PM
+--
 
 DROP TABLE IF EXISTS `savedservers`;
 CREATE TABLE `savedservers` (
@@ -37,6 +39,8 @@ CREATE TABLE `savedservers` (
 
 --
 -- Table structure for table `servers`
+--
+-- Creation: Dec 13, 2015 at 02:41 PM
 --
 
 DROP TABLE IF EXISTS `servers`;
@@ -52,6 +56,8 @@ CREATE TABLE `servers` (
 --
 -- Table structure for table `users`
 --
+-- Creation: Dec 11, 2015 at 05:35 PM
+--
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
@@ -62,6 +68,22 @@ CREATE TABLE `users` (
   `activated` tinyint(1) NOT NULL,
   `serverlimit` int(11) NOT NULL,
   `imported` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wads`
+--
+-- Creation: Dec 13, 2015 at 05:39 PM
+--
+
+DROP TABLE IF EXISTS `wads`;
+CREATE TABLE `wads` (
+  `id` bigint(20) NOT NULL,
+  `filename` text NOT NULL,
+  `uploader` bigint(20) NOT NULL,
+  `time` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -87,6 +109,12 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `wads`
+--
+ALTER TABLE `wads`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -104,7 +132,12 @@ ALTER TABLE `servers`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+--
+-- AUTO_INCREMENT for table `wads`
+--
+ALTER TABLE `wads`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

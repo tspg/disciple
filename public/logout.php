@@ -4,5 +4,8 @@
 	$_SESSION = array();
 
 	session_destroy();
-	Header("Location: /");
+	if(isset($_GET['accdel']))
+		Header("Location: /?accdel");
+	else
+		Header("Location: /");
 ?>
