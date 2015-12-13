@@ -80,7 +80,7 @@
 			$this->stderrfile 		= sprintf("%s/%s-stderr.log", disciple_json()->serverdata, $this->id);
 		}
 
-		public static function fromJSON($json)
+		public static function from_json($json)
 		{
 			$d = json_decode($json);
 
@@ -113,7 +113,7 @@
 			);
 		}
 
-		public function toJSON($save = false)
+		public function to_json($save = false)
 		{
 			$a = array(
 				'save'				=> 	$save,
@@ -238,11 +238,19 @@
 			);
 
 			$this->process = proc_open($this->generate_command_line(), $dsp, $pipes);
+			add_to_database();
 		}
 
-		public function addToDatabase()
+		protected function add_to_database()
 		{
-			$db->query(sprintf("INSERT INTO servers "))
+			$db->query(sprintf("INSERT INTO servers (sid, owner, json) VALUES('%s', %d, '%s')",
+								$this->id, $this->owner, $db->real_escape_string($this->to_json())));
+		}
+
+		public function save()
+		{
+			$db->query(sprintf("INSERT INTO savedservers (owner, json) VALUES(%d, '%s')",
+								$this->owner, $db->real_escape_string($this->to_json(true))));
 		}
 	}
 ?>

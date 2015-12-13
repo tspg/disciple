@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: durian
--- Generation Time: Dec 13, 2015 at 02:26 PM
+-- Generation Time: Dec 13, 2015 at 02:42 PM
 -- Server version: 10.1.9-MariaDB-log
 -- PHP Version: 5.6.16
 
@@ -26,6 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `savedservers`
 --
 
+DROP TABLE IF EXISTS `savedservers`;
 CREATE TABLE `savedservers` (
   `id` bigint(20) NOT NULL,
   `owner` bigint(20) NOT NULL,
@@ -38,8 +39,10 @@ CREATE TABLE `savedservers` (
 -- Table structure for table `servers`
 --
 
+DROP TABLE IF EXISTS `servers`;
 CREATE TABLE `servers` (
   `id` bigint(20) NOT NULL,
+  `sid` text NOT NULL,
   `owner` bigint(20) NOT NULL,
   `json` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -50,6 +53,7 @@ CREATE TABLE `servers` (
 -- Table structure for table `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `username` varchar(20) NOT NULL,
