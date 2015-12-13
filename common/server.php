@@ -252,5 +252,45 @@
 			$db->query(sprintf("INSERT INTO savedservers (owner, json) VALUES(%d, '%s')",
 								$this->owner, $db->real_escape_string($this->to_json(true))));
 		}
+
+		public static function get_by_id($sid)
+		{
+			$q = $db->query(sprintf("SELECT * FROM `servers` WHERE sid='%s'",
+									$db->real_escape_string($sid)));
+
+			$o = $q->fetch_object();
+
+			return json_decode($o->json);
+		}
+
+		public static function get_user_servers($uid)
+		{
+			$q = $db->query(sprintf("SELECT * FROM `servers` WHERE owner='%d'",
+									$db->real_escape_string($uid)));
+
+			$r = array();
+
+			while ($o = $q->fetch_object())
+			{
+				array_push($r, json_decode($o->json));
+			}
+
+			return $r;
+		}
+
+		public static function get_user_saves($uid)
+		{
+			$q = $db->query(sprintf("SELECT * FROM `savedservers` WHERE owner='%d'",
+									$db->real_escape_string($uid)));
+
+			$r = array();
+
+			while ($o = $q->fetch_object())
+			{
+				array_push($r, json_decode($o->json));
+			}
+
+			return $r;
+		}
 	}
 ?>
