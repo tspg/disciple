@@ -42,6 +42,11 @@ echo 'after';
 			<input type='number' id='serverlimit' value='4' required />
 
 			<br />
+			Where should I store data? This includes WADs and server logs.
+			<br />
+			<input type='text' id='serverdata' required />
+
+			<br />
 			What should the username and password for the "root" user (the user that can do basically anything) be?
 			<br />
 			<input type='text' id='rootuser' placeholder='Username' required />

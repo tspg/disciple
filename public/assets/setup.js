@@ -103,7 +103,8 @@ function post_config() {
 		'binary':			$('#binary').val(),
 		'serverlimit':		$('#serverlimit').val(),
 		'rootuser':			$('#rootuser').val(),
-		'rootpass':			$('#rootpass').val()
+		'rootpass':			$('#rootpass').val(),
+		'serverdata':		$('#serverdata').val()
 	})
 	.done(function(d) {
 		if (d == '1') {
@@ -119,10 +120,10 @@ function post_config() {
 			var code = msg.shift();
 			msg = msg.join(' ');
 			cfg_err('<strong>API Error ' + code + '</strong><br/>' + msg);
-					reset_submit();
+			reset_submit();
 		} else {
 			cfg_err('Failed to write configuration.<br />' + d.status + ' ' + d.statusText);
-					reset_submit();
+			reset_submit();
 		}
 
 		reset_submit();

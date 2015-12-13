@@ -7,6 +7,7 @@
 	$site_shortname = api_checkarg_post_required('site_shortname', 'Site short name');
 	$main_version_binary = api_checkarg_post_required('binary', 'Zandronum server binary location');
 	$serverlimit = intval(api_checkarg_post_required('serverlimit', 'Server limit'));
+	$serverdata = intval(api_checkarg_post_required('serverdata', 'Server data location'));
 	$rootuser = api_checkarg_post_required('rootuser', 'Root username');
 	$rootpass = api_checkarg_post_required('rootpass', 'Root password');
 
@@ -14,7 +15,8 @@
 		'site_name'			=>	$site_name,
 		'site_shortname' 	=>  $site_shortname,
 		'main_binary'		=>	$main_version_binary,
-		'serverlimit'		=> 	$serverlimit
+		'serverlimit'		=> 	$serverlimit,
+		'serverdata'		=> 	$serverdata
 	);
 
 	$file = dirname(dirname(dirname(__FILE__))) . '/config/config.json';
