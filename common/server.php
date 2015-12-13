@@ -203,6 +203,8 @@
 			$out .= sprintf("+compatflags %d ", $this->compatflags);
 			$out .= sprintf("+zacompatflags %d ", $this->zacompatflags);
 
+			$out .= sprintf('+exec "%s" ', $this->config);
+
 			return $out;
 		}
 
