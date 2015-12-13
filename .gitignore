@@ -9,3 +9,4 @@ public/phpmyadmin
 config/config.php
 config/.gen
 config/config.json
+public/wads
