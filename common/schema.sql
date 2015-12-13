@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: durian
--- Generation Time: Dec 13, 2015 at 10:37 AM
+-- Generation Time: Dec 13, 2015 at 02:26 PM
 -- Server version: 10.1.9-MariaDB-log
 -- PHP Version: 5.6.16
 
@@ -19,6 +19,30 @@ SET time_zone = "+00:00";
 --
 -- Database: `disciple`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `savedservers`
+--
+
+CREATE TABLE `savedservers` (
+  `id` bigint(20) NOT NULL,
+  `owner` bigint(20) NOT NULL,
+  `json` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `servers`
+--
+
+CREATE TABLE `servers` (
+  `id` bigint(20) NOT NULL,
+  `owner` bigint(20) NOT NULL,
+  `json` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -41,6 +65,18 @@ CREATE TABLE `users` (
 --
 
 --
+-- Indexes for table `savedservers`
+--
+ALTER TABLE `savedservers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `servers`
+--
+ALTER TABLE `servers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -51,10 +87,20 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `savedservers`
+--
+ALTER TABLE `savedservers`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `servers`
+--
+ALTER TABLE `servers`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
