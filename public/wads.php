@@ -28,6 +28,10 @@
 				{
 					echo "<div class='submit-err-box'>File <code>" . $_GET['exists'] . "</code> already exists on the server.</div>";
 				}
+				elseif (isset($_GET['iwad']))
+				{
+					echo "<div class='submit-err-box'>You are not allowed to upload commerical IWADs.</div>";
+				}
 				elseif (isset($_GET['unknownerror']))
 				{
 					echo "<div class='submit-err-box'>An unknown error occured while uploading <code>" . $_GET['exists'] . "</code>.</div>";

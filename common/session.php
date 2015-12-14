@@ -43,7 +43,7 @@
 				return null;
 			}
 
-			$uinfq = getsql()->query("SELECT * FROM `users` WHERE `id`=" . $_SESSION['id']);
+			$uinfq = getsql()->query("SELECT * FROM `users` WHERE `id`=" . $id);
 
 			// Make sure to destroy our session if this user doesn't exist anymore.
 			if ($uinfq->num_rows == 0 && $id == $_SESSION['id'])
