@@ -3,6 +3,7 @@
 	include dirname(dirname(dirname(__FILE__))) . '/common/session.php';
 	include 'apishared.php';
 
+	var_dump($_SESSION);
 	// A list of MD5s for all known commercial
 	// IWADs.
 	$iwadmd5 = array(
@@ -81,66 +82,111 @@
 		'25485721882b050afa96a56e5758dd52'
 	);
 
-	if (is_authed())
+	$call = api_checkarg_post('fn');
+
+	if ($call == 'upload')
 	{
-		if (intval($_SERVER['CONTENT_LENGTH'])>0 && count($_POST)===0){
-			Header("Location: /wads?toobig=" . $fn);
-			exit();
-		}
-
-		if (isset($_POST['doup']))
+		if (is_authed())
 		{
-			$target_dir = data_dir('/wads/');
-			$fn = basename($_FILES['file']['name']);
-			$ext = pathinfo($fn, PATHINFO_EXTENSION);
-			$fn = preg_replace('/[^a-zA-Z0-9_\-]+/', '', pathinfo($fn, PATHINFO_FILENAME)) . '.' . $ext;
-			$target_file = $target_dir . $fn;
-			$uploadOk = 1;
-			$tmploc = $_FILES['file']['tmp_name'];
-
-			$lext = strtolower($ext);
-			if (!($lext == 'wad' || $lext == 'pk3' || $lext == 'pk7'))
-			{
-				Header("Location: /wads?badext");
+			if (intval($_SERVER['CONTENT_LENGTH'])>0 && count($_POST)===0){
+				Header("Location: /wads?toobig=" . $fn);
 				exit();
 			}
 
-			if (in_array(md5_file($tmploc), $iwadmd5))
+			if (isset($_POST['doup']))
 			{
-				Header("Location: /wads?iwad");
-				exit();
-			}
+				$target_dir = data_dir('/wads/');
+				$fn = basename($_FILES['file']['name']);
+				$ext = pathinfo($fn, PATHINFO_EXTENSION);
+				$fn = preg_replace('/[^a-zA-Z0-9_\-\.]+/', '', pathinfo($fn, PATHINFO_FILENAME)) . '.' . $ext;
+				$target_file = $target_dir . $fn;
+				$uploadOk = 1;
+				$tmploc = $_FILES['file']['tmp_name'];
 
-			if (file_exists($target_file))
-			{
-				Header("Location: /wads?exists=" . $fn);
-				exit();
-			}
+				$lext = strtolower($ext);
+				if (!($lext == 'wad' || $lext == 'pk3' || $lext == 'pk7'))
+				{
+					Header("Location: /wads?badext");
+					exit();
+				}
 
-			if (move_uploaded_file($tmploc, $target_file) === FALSE)
-			{
-				Header("Location: /wads?unknownerror=" . $fn);
-				exit();
+				if (in_array(md5_file($tmploc), $iwadmd5))
+				{
+					Header("Location: /wads?iwad");
+					exit();
+				}
+
+				if (file_exists($target_file))
+				{
+					Header("Location: /wads?exists=" . $fn);
+					exit();
+				}
+
+				if (move_uploaded_file($tmploc, $target_file) === FALSE)
+				{
+					Header("Location: /wads?unknownerror=" . $fn);
+					exit();
+				}
+				else
+				{
+					$db = getsql();
+					$db->query(sprintf("INSERT INTO wads (filename, uploader, time) VALUES ('%s', %d, %d)",
+								$fn, $_SESSION['id'], time()));
+					echo $db->error;
+					Header("Location: /wads?ok=" . $fn);
+					exit();
+				}
 			}
 			else
 			{
-				$db = getsql();
-				$db->query(sprintf("INSERT INTO wads (filename, uploader, time) VALUES ('%s', %d, %d)",
-							$fn, $_SESSION['id'], time()));
-				echo $db->error;
-				Header("Location: /wads?ok=" . $fn);
+				Header("Location: /wads" . $fn);
 				exit();
 			}
 		}
 		else
 		{
-			Header("Location: /wads" . $fn);
+			Header("Location: /wads?unauthed");
 			exit();
 		}
 	}
-	else
+	elseif ($call == 'upload_progress')
 	{
-		Header("Location: /wads?unauthed");
-		exit();
+		if (!empty($_SESSION[ini_get('session.upload_progress.prefix') . 'form' . api_checkarg_post('formname')]))
+		{
+		    echo $current < $total ? ceil($_SESSION[$key]['bytes_processed'] / $_SESSION[$key]['content_length'] * 100) : 100;
+		}
+		else
+		{
+			api_error(SN_NO_DATA, 'Not uploading anything.');
+		}
+	}
+	elseif($call == 'md5')
+	{
+		$id = intval(api_checkarg_post('id'));
+		if ($id == 0)
+		{
+			api_error(SN_API_CALL_BAD_PARAMETER, 'id is not a number');
+		}
+
+		$db = getsql();
+		$q = $db->query(sprintf("SELECT md5,filename FROM wads WHERE id=%d", $id));
+
+		if ($q->num_rows < 1)
+		{
+			api_error(SN_API_CALL_BAD_PARAMETER, 'id is not a valid WAD id');
+		}
+
+		$o = $q->fetch_object();
+		$md5 = $o->md5;
+
+		// If empty, generate it
+		if (empty($md5))
+		{
+			$md5 = md5_file(disciple_json()->serverdata . '/wads/' . $o->filename);
+			$db->query(sprintf("UPDATE `wads` SET `md5`='%s' WHERE `id`=%d",
+								$md5, $id));
+		}
+
+		echo sprintf('MD5OK %s', $md5);
 	}
 ?>

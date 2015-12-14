@@ -8,6 +8,7 @@
 	define('SN_API_CALL_EMPTY_PARAMETER', 7);
 	define('SN_USER_ALREADY_EXISTS', 8);
 	define('SN_FILE_EXISTS', 9);
+	define('SN_NO_DATA', 10);
 
 	define('UL_UNREGISTERED', 0);
 	define('UL_REGISTERED', 100);

@@ -12,13 +12,63 @@
 
 <?php sn_page_header('WADs'); ?>
 	<?php sn_page_start_container(); ?>
+		<script src='/assets/wadshared.js'></script>
 		<script>
+			function err(e) {
+				$('#ss-err-box').hide();
+				$('#ss-err-box').html('');
+				$('#js-err-box').hide();
+				$('#js-err-box').show();
+				$('#js-err-box').html(e);
+			}
+
+			function derr() {
+				$('#ss-err-box').hide();
+				$('#ss-err-box').html('');
+				$('#js-err-box').hide();
+				$('#js-err-box').html('');
+			}
+
 			function wadupload() {
 				$('#clickme').click();
 				$('#clickme').change(function() {
+					derr();
 					$('#clickmetoo').click();
 					$('#upload-button').text('Uploading, please wait...');
 					$('#upload-button').prop('disabled', true);
+
+					update_progress();
+				});
+			}
+
+			function update_progress() {
+				$.post('/api/wads.php',
+				{
+					'fn':		'upload_progress',
+					'formname':	$('#__form_name').val()
+				})
+				.done(function(d) {
+					var split = d.split(' ');
+					if (split.length == 1) {
+						$('#upload-button').text('Uploading &mdash; ' + d + '%');
+						setTimeout(function() {
+							update_progress();
+						}, 100);
+					} else {
+						var code = split.shift();
+						var l = split.join(' ');
+						$('#upload-button').text(code + ' ' + l);
+					}
+				})
+				.fail(function(d) {
+					if (d.status == 400) {
+						var msg = d.responseText.split(' ');
+						var code = msg.shift();
+						msg = msg.join(' ');
+						err('<strong>API Error ' + code + '</strong><br/>' + msg);
+					} else {
+						err('Failed import.<br />' + d.status + ' ' + d.statusText);
+					}
 				});
 			}
 		</script>
@@ -27,29 +77,52 @@
 		<?php
 			if (is_authed())
 			{
+				$type = (isset($_GET['ok']) ? 'ok' : 'err');
+				$c = '';
+
 				if (isset($_GET['ok']))
 				{
-					echo "<div class='submit-ok-box'>Uploaded file <code>" . $_GET['ok'] . "</code> successfully.</div>";
+					$c = "Uploaded file <code>" . $_GET['ok'] . "</code> successfully.";
 				}
 				elseif (isset($_GET['exists']))
 				{
-					echo "<div class='submit-err-box'>File <code>" . $_GET['exists'] . "</code> already exists on the server.</div>";
+					$c = "File <code>" . $_GET['exists'] . "</code> already exists on the server.";
 				}
 				elseif (isset($_GET['iwad']))
 				{
-					echo "<div class='submit-err-box'>You are not allowed to upload commerical IWADs.</div>";
+					$c = "You are not allowed to upload commerical IWADs.";
 				}
 				elseif (isset($_GET['unknownerror']))
 				{
-					echo "<div class='submit-err-box'>An unknown error occured while uploading <code>" . $_GET['exists'] . "</code>.</div>";
+					$c = "An unknown error occured while uploading <code>" . $_GET['exists'] . "</code>.";
 				}
+				else
+				{
+					$c = null;
+				}
+
+				$h = '';
+				if ($c == null)
+				{
+					$h = "<div class='submit-$type-box' id='ss-err-box' style='display:none'>";
+				}
+				else
+				{
+					$h = "<div class='submit-$type-box' id='ss-err-box'>";
+				}
+
+				echo $h;
+				echo $c;
+				echo "</div>";
 		?>
-			<form action='/api/wadupload.php' method='POST' id='upform' enctype='multipart/form-data'>
+			<div class='submit-err-box' id='js-err-box' style='display:none'></div>
+			<form action='/api/wads.php' method='POST' id='upform' enctype='multipart/form-data'>
 				<input type='hidden' name='doup' value='true' />
+				<input type='hidden' name='fn' value='upload' />
 				<div style='width:100%;display:table'>
 					<div id='upload-button' onclick='wadupload()'>Upload</div>
 				</div>
-				<input type='hidden' value='form' name='<?php echo ini_get('session.upload_progress.name'); ?>'>
+				<input type='hidden' id='__form_name' value='form<?=mt_rand() + time();?>' name='<?php echo ini_get('session.upload_progress.name'); ?>'>
 				<input type='file' name='file' style='display: none' id='clickme' />
 				<input type='submit' name='sb' style='display: none' value='Upload' id='clickmetoo' />
 			</form>
@@ -70,6 +143,7 @@
 				<th>Size</th>
 				<th>Uploaded by</th>
 				<th>Date and time</th>
+				<th>MD5</th>
 			</tr>
 		<?php
 			$db = getsql();
@@ -83,6 +157,7 @@
 				<td><?=human_filesize(filesize(disciple_json()->serverdata . '/wads/' . $o->filename));?></td>
 				<td><?=user_info($o->uploader)->username;?></td>
 				<td><?=date('Y-m-d \a\t H:i:s', $o->time);?></td>
+				<td id='wadmd5-<?=$o->id;?>'><a href='javascript:wadMd5(<?=$o->id;?>);'>Show</a></td>
 			</tr>
 		<?php
 			}

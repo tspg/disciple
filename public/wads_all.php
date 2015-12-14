@@ -5,6 +5,7 @@
 
 <?php sn_page_header('All WADs'); ?>
 	<?php sn_page_start_container(); ?>
+		<script src='/assets/wadshared.js'></script>
 		<h3>All WADs</h3>
 		<table>
 			<tr>

@@ -17,6 +17,7 @@
 		{
 			api_error(SN_API_CALL_BAD_PARAMETER, 'Username contains invalid characters.');
 		}
+
 		$qUserExists = $db->query(sprintf("SELECT `id` FROM `users` WHERE `username`='%s'", $username));
 		if ($qUserExists->num_rows > 0)
 		{
