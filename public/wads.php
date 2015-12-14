@@ -1,5 +1,6 @@
 <?php
 	include dirname(dirname(__FILE__)) . '/common/pages.php';
+	include dirname(dirname(__FILE__)) . '/common/wads.php';
 	include dirname(dirname(__FILE__)) . '/config/config.php';
 
 	function human_filesize($bytes, $decimals = 2)
@@ -37,7 +38,7 @@
 					$('#upload-button').text('Uploading, please wait...');
 					$('#upload-button').prop('disabled', true);
 
-					update_progress();
+					// update_progress();
 				});
 			}
 
@@ -96,6 +97,10 @@
 				{
 					$c = "An unknown error occured while uploading <code>" . $_GET['exists'] . "</code>.";
 				}
+				elseif (isset($_GET['badext']))
+				{
+					$c = "The file type <code>" . $_GET['badext'] . "</code> is not supported..";
+				}
 				else
 				{
 					$c = null;
@@ -137,32 +142,7 @@
 				<input type='button' value='View All' onclick='document.location="/wads/all"'/>
 			</div>
 		</div>
-		<table>
-			<tr>
-				<th>File</th>
-				<th>Size</th>
-				<th>Uploaded by</th>
-				<th>Date and time</th>
-				<th>MD5</th>
-			</tr>
-		<?php
-			$db = getsql();
-			$q = $db->query("SELECT * FROM `wads` ORDER BY `time` DESC LIMIT 20");
-
-			while ($o = $q->fetch_object())
-			{
-		?>
-			<tr id='wadrow-<?=$o->id;?>'>
-				<td><a href='/wads/<?=$o->filename;?>'><?=$o->filename;?></a></td>
-				<td><?=human_filesize(filesize(disciple_json()->serverdata . '/wads/' . $o->filename));?></td>
-				<td><?=user_info($o->uploader)->username;?></td>
-				<td><?=date('Y-m-d \a\t H:i:s', $o->time);?></td>
-				<td id='wadmd5-<?=$o->id;?>'><a href='javascript:wadMd5(<?=$o->id;?>);'>Show</a></td>
-			</tr>
-		<?php
-			}
-		?>
-		</table>
+		<?php display_wad_table(20); ?>
 		<?php sn_page_cfooter(); ?>
 	<?php sn_page_end_container(); ?>
 <?php sn_page_footer(); ?>

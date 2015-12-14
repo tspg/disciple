@@ -23,10 +23,17 @@
 		<title>$title &mdash; Disciple</title>
 
 		<script src='/assets/jquery.js'></script>
+		<script src='/assets/jqueryui.js'></script>
+		<script src='/assets/fe.js'></script>
 
 		<link href='//fonts.googleapis.com/css?family=Roboto|Roboto+Mono' rel='stylesheet' type='text/css' />
+		<link href='/assets/jqueryui.css' rel='stylesheet' type='text/css' />
 		<link href='/assets/shared.css' rel='stylesheet' type='text/css' />
 		<link href='/assets/fe.css' rel='stylesheet' type='text/css' />
+
+		<meta name='theme-color' content='#B71C1C' />
+
+		<meta name='viewport' content='width=device-width, initial-scale=1.0' />
 	</head>
 	<body>
 		<header id='main'>

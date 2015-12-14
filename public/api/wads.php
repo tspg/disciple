@@ -3,7 +3,6 @@
 	include dirname(dirname(dirname(__FILE__))) . '/common/session.php';
 	include 'apishared.php';
 
-	var_dump($_SESSION);
 	// A list of MD5s for all known commercial
 	// IWADs.
 	$iwadmd5 = array(
@@ -106,7 +105,7 @@
 				$lext = strtolower($ext);
 				if (!($lext == 'wad' || $lext == 'pk3' || $lext == 'pk7'))
 				{
-					Header("Location: /wads?badext");
+					Header("Location: /wads?badext=$ext");
 					exit();
 				}
 
@@ -157,10 +156,38 @@
 		}
 		else
 		{
-			api_error(SN_NO_DATA, 'Not uploading anything.');
+			api_error(SN_NO_DATA, 'Not uploading anything. (if you see this it\'s probably the upload progress thing not detecting you\'re uploading something, if you are ignore this)');
 		}
 	}
-	elseif($call == 'md5')
+	elseif ($call == 'delete')
+	{
+		$id = intval(api_checkarg_post('id'));
+		$db = getsql();
+
+		if ($id == 0)
+		{
+			api_error(SN_API_CALL_BAD_PARAMETER, 'id is not a number');
+		}
+
+		$q = $db->query(sprintf("SELECT filename FROM wads WHERE id=%d", $id));
+
+		if ($q->num_rows < 1)
+		{
+			api_error(SN_API_CALL_BAD_PARAMETER, 'id is not a valid WAD id');
+		}
+
+		$o = $q->fetch_object();
+
+		if (user_info()->userlevel < UL_ADMINISTRATOR && $o->owner != $_SESSION['id'])
+		{
+			api_error(SN_FORBIDDEN, 'You do not have access to this operation.');
+		}
+
+		$db->query("DELETE FROM `wads` WHERE `id`=$id");
+		unlink(disciple_json()->serverdata . '/wads/' . $o->filename);
+		echo 1;
+	}
+	elseif ($call == 'md5')
 	{
 		$id = intval(api_checkarg_post('id'));
 		if ($id == 0)

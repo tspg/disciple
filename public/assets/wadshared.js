@@ -28,3 +28,27 @@ function wadMd5(id) {
 		}
 	});
 }
+
+function deleteWad(id) {
+	$.post('/api/wads.php',
+	{
+		'fn':		'delete',
+		'id':		id
+	})
+	.done(function(d) {
+		if (d == 1) {
+			$('#wadrow-' + id).slideUp();
+		}
+	})
+	.fail(function(d) {
+		enable_button();
+		if (d.status == 400) {
+			var msg = d.responseText.split(' ');
+			var code = msg.shift();
+			msg = msg.join(' ');
+			err('<strong>API Error ' + code + '</strong><br/>' + msg);
+		} else {
+			err('Failed import.<br />' + d.status + ' ' + d.statusText);
+		}
+	});
+}
