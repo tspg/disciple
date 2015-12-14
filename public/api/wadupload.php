@@ -75,7 +75,10 @@
 
 		// Strife
 		'8f2d3a6a289f5d2f2f9c1eec02b47299', // 1.0
-		'2fed2031a5b03892106e0f117f17901f'  // 1.2
+		'2fed2031a5b03892106e0f117f17901f', // 1.2
+
+		// Chex Quest
+		'25485721882b050afa96a56e5758dd52'
 	);
 
 	if (is_authed())
