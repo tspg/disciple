@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: durian
--- Generation Time: Dec 13, 2015 at 07:57 PM
+-- Generation Time: Dec 14, 2015 at 08:03 AM
 -- Server version: 10.1.9-MariaDB-log
 -- PHP Version: 5.6.16
 
@@ -61,7 +61,8 @@ CREATE TABLE `users` (
   `email` text NOT NULL,
   `activated` tinyint(1) NOT NULL,
   `serverlimit` int(11) NOT NULL,
-  `imported` tinyint(1) NOT NULL
+  `imported` tinyint(1) NOT NULL,
+  `userlevel` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -124,12 +125,12 @@ ALTER TABLE `servers`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `wads`
 --
 ALTER TABLE `wads`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

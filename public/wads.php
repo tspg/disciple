@@ -78,7 +78,7 @@
 			while ($o = $q->fetch_object())
 			{
 		?>
-			<tr>
+			<tr id='wadrow-<?=$o->id;?>'>
 				<td><a href='/wads/<?=$o->filename;?>'><?=$o->filename;?></a></td>
 				<td><?=human_filesize(filesize(disciple_json()->serverdata . '/wads/' . $o->filename));?></td>
 				<td><?=user_info($o->uploader)->username;?></td>

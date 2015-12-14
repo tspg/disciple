@@ -23,6 +23,12 @@
 
 			break;
 
+		case 413:
+			$head = 'Entity Too Large';
+			$body = 'Looks like that file is too big for our server.';
+
+			break;
+
 		case 500:
 			$head = 'Internal Server Error';
 			$body = 'Something\'s gone wrong on our end, please bare with us.';

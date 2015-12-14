@@ -19,7 +19,7 @@
 			while ($o = $q->fetch_object())
 			{
 		?>
-			<tr>
+			<tr id='wadrow-<?=$o->id;?>'>
 				<td><?=$o->filename;?></td>
 				<td><?=user_info($o->uploader)->username;?></td>
 				<td><?=date('Y-m-d \a\t H:i:s', $o->time);?></td>
