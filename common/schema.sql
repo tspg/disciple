@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: durian
--- Generation Time: Dec 14, 2015 at 08:03 AM
+-- Generation Time: Dec 14, 2015 at 08:42 PM
 -- Server version: 10.1.9-MariaDB-log
 -- PHP Version: 5.6.16
 
@@ -76,7 +76,8 @@ CREATE TABLE `wads` (
   `id` bigint(20) NOT NULL,
   `filename` text NOT NULL,
   `uploader` bigint(20) NOT NULL,
-  `time` bigint(20) NOT NULL
+  `time` bigint(20) NOT NULL,
+  `md5` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -130,7 +131,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `wads`
 --
 ALTER TABLE `wads`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
