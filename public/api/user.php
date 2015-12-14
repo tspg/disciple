@@ -13,6 +13,10 @@
 	{
 		$username = $db->real_escape_string(api_checkarg_post_required('username', 'Username'));
 
+		if (preg_match('/[^a-zA-Z0-9_]+/', $username))
+		{
+			api_error(SN_API_CALL_BAD_PARAMETER, 'Username contains invalid characters.');
+		}
 		$qUserExists = $db->query(sprintf("SELECT `id` FROM `users` WHERE `username`='%s'", $username));
 		if ($qUserExists->num_rows > 0)
 		{

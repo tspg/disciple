@@ -1,6 +1,13 @@
 <?php
 	include dirname(dirname(__FILE__)) . '/common/pages.php';
 	include dirname(dirname(__FILE__)) . '/config/config.php';
+
+	function human_filesize($bytes, $decimals = 2)
+	{
+		$sz = ' KMGTP';
+		$factor = floor((strlen($bytes) - 1) / 3);
+		return sprintf("%.{$decimals}f %sB", $bytes / pow(1024, $factor), @$sz[$factor]);
+	}
 ?>
 
 <?php sn_page_header('WADs'); ?>
@@ -46,11 +53,11 @@
 				<input type='file' name='file' style='display: none' id='clickme' />
 				<input type='submit' name='sb' style='display: none' value='Upload' id='clickmetoo' />
 			</form>
+
+			<br /><hr /><br />
 		<?php
 			}
 		?>
-
-		<br /><hr /><br />
 		<div id='serverboxhead'>
 			<h3>Most Recent WADs</h3>
 			<div id='right'>
@@ -60,6 +67,7 @@
 		<table>
 			<tr>
 				<th>File</th>
+				<th>Size</th>
 				<th>Uploaded by</th>
 				<th>Date and time</th>
 			</tr>
@@ -71,7 +79,8 @@
 			{
 		?>
 			<tr>
-				<td><?=$o->filename;?></td>
+				<td><a href='/wads/<?=$o->filename;?>'><?=$o->filename;?></a></td>
+				<td><?=human_filesize(filesize(disciple_json()->serverdata . '/wads/' . $o->filename));?></td>
 				<td><?=user_info($o->uploader)->username;?></td>
 				<td><?=date('Y-m-d \a\t H:i:s', $o->time);?></td>
 			</tr>
