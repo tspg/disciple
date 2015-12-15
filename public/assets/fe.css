@@ -170,3 +170,28 @@ table a:link, table a:visited {
                   0 1px 10px 0 rgba(0, 0, 0, 0.12),
                   0 2px 4px -1px rgba(0, 0, 0, 0.4);
 }
+
+.wadbox {
+	box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+				  0 1px 10px 0 rgba(0, 0, 0, 0.12),
+				  0 2px 4px -1px rgba(0, 0, 0, 0.4);
+	background: rgba(0, 0, 0, 0.75);
+	border: 1px solid #90A4AE;
+	border-top: none;
+}
+
+.wadbox a:link, .wadbox a:visited {
+	display: block;
+	padding: 3px 7px;
+	color: #F44336;
+	transition: all .25s ease;
+}
+
+.wadbox a:hover, .wadbox a:focus, .wadbox a.selected {
+	background: #F44336;
+	color: #000000;
+}
+
+.ul {
+	text-decoration: underline;
+}

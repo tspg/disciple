@@ -275,4 +275,31 @@
 
 		echo sprintf('MD5OK %s', $md5);
 	}
+	elseif ($call == 'search')
+	{
+		$s = api_checkarg_post('q');
+
+		$db = getsql();
+		$q = $db->query(sprintf("SELECT id,filename FROM wads WHERE filename LIKE '%%%s%%'",
+								$db->real_escape_string($s)));
+
+		if ($q->num_rows < 1)
+		{
+			echo '[]';
+			exit();
+		}
+
+		$out = array();
+
+		while ($o = $q->fetch_object())
+		{
+			array_push($out, array(
+				'id'		=> 	intval($o->id),
+				'plain'		=>	$o->filename,
+				'html'		=>	str_replace($s, "<span class='ul'>$s</span>", $o->filename)
+			));
+		}
+
+		echo json_encode($out);
+	}
 ?>

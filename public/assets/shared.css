@@ -62,6 +62,32 @@ input[type='number']:focus {
 	color: #BF360C;
 }
 
+select {
+	font-family: 'Roboto', sans-serif;
+	border: none;
+	border-bottom: 4px solid rgba(255, 255, 255, 0.25);
+	border-radius: 2px;
+	background: rgba(0, 0, 0, 0);
+	padding: 5px;
+	width: 100%;
+	font-size: 12pt;
+	transition: all .25s ease;
+	margin-bottom: 5px;
+	color: #ECEFF1;
+}
+
+select:focus {
+	border-bottom: 4px solid #FF5722;
+	outline: none;
+	background: #FBE9E7;
+	color: #BF360C;
+}
+
+option:hover {
+	background: #BF360C;
+	color: #FBE9E7;
+}
+
 input[type='button'][disabled] {
 	background: #607D8B;
 	border-color: #78909C;

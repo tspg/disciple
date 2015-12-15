@@ -184,6 +184,7 @@
 			{
 				case 'deathmatch':
 				case 'terminator':
+				case 'possession':
 				case 'teampossession':
 				case 'skulltag':
 				case 'duel':
