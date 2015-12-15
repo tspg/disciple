@@ -127,6 +127,11 @@
 				<div style='width:100%;display:table'>
 					<div id='upload-button' onclick='wadupload()'>Upload</div>
 				</div>
+				<div style='width:100%;text-align:center;margin-top:4px;font-size:10pt'>
+					Maximum size file 250MB.
+					<br />
+					Supported formats are <code>wad</code>, <code>pk3</code>, and <code>pk7</code>.
+				</div>
 				<input type='hidden' id='__form_name' value='form<?=mt_rand() + time();?>' name='<?php echo ini_get('session.upload_progress.name'); ?>'>
 				<input type='file' name='file' style='display: none' id='clickme' />
 				<input type='submit' name='sb' style='display: none' value='Upload' id='clickmetoo' />

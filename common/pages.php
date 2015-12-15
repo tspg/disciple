@@ -42,6 +42,7 @@
 			<nav id='left'>
 				<a href='/'>Home</a>
 				<a href='/wads'>WADs</a>
+				<a href='/bans'>Bans</a>
 			</nav>
 			<nav id='right'>";
 

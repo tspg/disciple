@@ -52,3 +52,54 @@ function deleteWad(id) {
 		}
 	});
 }
+
+function banWad(id) {
+	$.post('/api/wads.php',
+	{
+		'fn':		'ban',
+		'id':		id
+	})
+	.done(function(d) {
+		if (d == 1) {
+			document.location.hash = 'wadrow-' + id;
+			document.location.reload();
+		}
+	})
+	.fail(function(d) {
+		enable_button();
+		if (d.status == 400) {
+			var msg = d.responseText.split(' ');
+			var code = msg.shift();
+			msg = msg.join(' ');
+			err('<strong>API Error ' + code + '</strong><br/>' + msg);
+		} else {
+			err('Failed ban.<br />' + d.status + ' ' + d.statusText);
+		}
+	});
+}
+
+
+function unbanWad(id) {
+	$.post('/api/wads.php',
+	{
+		'fn':		'unban',
+		'id':		id
+	})
+	.done(function(d) {
+		if (d == 1) {
+			document.location.hash = 'wadrow-' + id;
+			document.location.reload();
+		}
+	})
+	.fail(function(d) {
+		enable_button();
+		if (d.status == 400) {
+			var msg = d.responseText.split(' ');
+			var code = msg.shift();
+			msg = msg.join(' ');
+			err('<strong>API Error ' + code + '</strong><br/>' + msg);
+		} else {
+			err('Failed ban.<br />' + d.status + ' ' + d.statusText);
+		}
+	});
+}

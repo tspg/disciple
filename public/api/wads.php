@@ -109,7 +109,8 @@
 					exit();
 				}
 
-				if (in_array(md5_file($tmploc), $iwadmd5))
+				$md5 = md5_file($tmploc);
+				if (in_array($md5))
 				{
 					Header("Location: /wads?iwad");
 					exit();
@@ -129,8 +130,8 @@
 				else
 				{
 					$db = getsql();
-					$db->query(sprintf("INSERT INTO wads (filename, uploader, time) VALUES ('%s', %d, %d)",
-								$fn, $_SESSION['id'], time()));
+					$db->query(sprintf("INSERT INTO wads (filename, uploader, time, md5) VALUES ('%s', %d, %d, '%s')",
+								$fn, $_SESSION['id'], time(), $md5));
 					echo $db->error;
 					Header("Location: /wads?ok=" . $fn);
 					exit();
@@ -185,6 +186,64 @@
 
 		$db->query("DELETE FROM `wads` WHERE `id`=$id");
 		unlink(disciple_json()->serverdata . '/wads/' . $o->filename);
+		echo 1;
+	}
+	elseif ($call == 'ban')
+	{
+		$id = intval(api_checkarg_post('id'));
+		$db = getsql();
+
+		if ($id == 0)
+		{
+			api_error(SN_API_CALL_BAD_PARAMETER, 'id is not a number');
+		}
+
+		$q = $db->query(sprintf("SELECT md5 FROM wads WHERE id=%d", $id));
+
+		if ($q->num_rows < 1)
+		{
+			api_error(SN_API_CALL_BAD_PARAMETER, 'id is not a valid WAD id');
+		}
+
+		$o = $q->fetch_object();
+
+		if (user_info()->userlevel < UL_ADMINISTRATOR && $o->owner != $_SESSION['id'])
+		{
+			api_error(SN_FORBIDDEN, 'You do not have access to this operation.');
+		}
+
+		$md5 = $o->md5;
+		$uid = $_SESSION['id'];
+		$sec = time();
+
+		$db->query("INSERT INTO `wadbans` (md5, banner, time) VALUES ('$md5', $uid, $sec)");
+		echo 1;
+	}
+	elseif ($call == 'unban')
+	{
+		$id = intval(api_checkarg_post('id'));
+		$db = getsql();
+
+		if ($id == 0)
+		{
+			api_error(SN_API_CALL_BAD_PARAMETER, 'id is not a number');
+		}
+
+		$q = $db->query(sprintf("SELECT md5 FROM wads WHERE id=%d", $id));
+
+		if ($q->num_rows < 1)
+		{
+			api_error(SN_API_CALL_BAD_PARAMETER, 'id is not a valid WAD id');
+		}
+
+		$o = $q->fetch_object();
+
+		if (user_info()->userlevel < UL_ADMINISTRATOR && $o->owner != $_SESSION['id'])
+		{
+			api_error(SN_FORBIDDEN, 'You do not have access to this operation.');
+		}
+
+		$db->query("DELETE FROM `wadbans` WHERE `md5`='$o->md5'");
 		echo 1;
 	}
 	elseif ($call == 'md5')

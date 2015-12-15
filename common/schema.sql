@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: durian
--- Generation Time: Dec 14, 2015 at 08:42 PM
+-- Generation Time: Dec 15, 2015 at 07:58 AM
 -- Server version: 10.1.9-MariaDB-log
 -- PHP Version: 5.6.16
 
@@ -19,6 +19,21 @@ SET time_zone = "+00:00";
 --
 -- Database: `disciple`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bans`
+--
+
+DROP TABLE IF EXISTS `bans`;
+CREATE TABLE `bans` (
+  `id` bigint(20) NOT NULL,
+  `ip` varchar(15) NOT NULL,
+  `banner` bigint(20) NOT NULL,
+  `time` bigint(20) NOT NULL,
+  `reason` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -68,6 +83,20 @@ CREATE TABLE `users` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `wadbans`
+--
+
+DROP TABLE IF EXISTS `wadbans`;
+CREATE TABLE `wadbans` (
+  `id` bigint(20) NOT NULL,
+  `md5` text NOT NULL,
+  `banner` bigint(20) NOT NULL,
+  `time` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `wads`
 --
 
@@ -103,6 +132,12 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `wadbans`
+--
+ALTER TABLE `wadbans`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `wads`
 --
 ALTER TABLE `wads`
@@ -127,6 +162,11 @@ ALTER TABLE `servers`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+--
+-- AUTO_INCREMENT for table `wadbans`
+--
+ALTER TABLE `wadbans`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `wads`
 --

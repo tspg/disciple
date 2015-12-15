@@ -35,7 +35,6 @@
 
 				$q = $db->query("SELECT * FROM `wads` ORDER BY `time` DESC $limitstring");
 
-					echo $q->num_rows;
 				if ($q->num_rows < 1)
 				{
 					echo "
@@ -79,7 +78,14 @@
 
 							if (user_info()->userlevel >= UL_ADMINISTRATOR)
 							{
-								echo "<a href='javascript:banWad($id);' title='Ban'><img src='/images/nah.svg' alt='Ban' /></a>";
+								if ($db->query("SELECT * FROM `wadbans` WHERE `md5`='" . $o->md5 . "'")->num_rows == 0)
+								{
+									echo "<a href='javascript:banWad($id);' title='Ban'><img src='/images/nah.svg' alt='Ban' /></a>";
+								}
+								else
+								{
+									echo "<a href='javascript:unbanWad($id);' title='Unban'><img src='/images/tick.svg' alt='Unban' /></a>";
+								}
 							}
 						}
 
