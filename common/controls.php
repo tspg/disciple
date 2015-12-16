@@ -13,7 +13,9 @@
 <div id='g$boxid'>";
 			echo "<input type='text' name='n$wboxid' id='$wboxid' placeholder='$placeholder' />
 			<script>";
-			echo \JShrink\Minifier::minify("
+			echo
+			\JShrink\Minifier::minify(
+			"
 	var _$boxid = {
 		selected: -1,
 		results: 0,
@@ -66,7 +68,7 @@
 
 			        case 40:
 						_$boxid.evlock = true;
-							_$boxid.handleUpdate(2);
+						_$boxid.handleUpdate(2);
 						e.preventDefault();
 						_$boxid.evlock = false;
 			        	break;
@@ -120,8 +122,7 @@
 				'q':	q
 			})
 			.done(function(d) {
-				j = JSON.parse(d);
-				_$boxid.displayBox(j);
+				_$boxid.displayBox(d);
 			})
 			.fail(function(d) {
 				_$boxid.reset();
@@ -145,10 +146,9 @@
 			dbx.css({
 				'width':	$('#$wboxid').width(),
 				'height':	'250px',
-				'position':	'fixed',
-				'top':		$('#$wboxid').offset().top + 33,
-				'left':		$('#$wboxid').offset().left,
-				'z-index':	9998
+				'position':	'absolute',
+				'top':		$('#$wboxid').offset().top - 37,
+				'left':		$('#$wboxid').offset().left
 			});
 
 			for (var i = 0; i < results.length; i++) {
@@ -209,18 +209,28 @@
 		},
 
 		submit: function(x) {
-			_$boxid.destroyBox();
 			$('#$wboxid').val('');
 
 			if (x > 0) {
 				_$boxid.selectItem(x);
 			}
 
-			sel = _$boxid.res[_$boxid.selected];
+			var found = false;
+			var i = 0;
+			var sel;
+			while (!found && i < _$boxid.res.length) {
+				if (_$boxid.res[i].id == _$boxid.selected) {
+					found = false;
+					sel = _$boxid.res[i];
+				}
+
+				i++;
+			}
 			$jsOnCall({
 				id:			sel.id,
 				filename:	sel.plain
 			});
+			_$boxid.destroyBox();
 		}
 	};
 
@@ -228,7 +238,9 @@
 		_$boxid.init();
 	});
 </script>
-", array('flaggedComments' => false));
+"
+, array('flaggedComments' => false))
+;
 
 			echo "</div>";
 		}

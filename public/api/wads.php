@@ -300,6 +300,38 @@
 			));
 		}
 
+		Header("Content-Type: text/json");
 		echo json_encode($out);
+	}
+	elseif ($call == 'info')
+	{
+		$id = intval(api_checkarg_post('id'));
+		$db = getsql();
+
+		if ($id == 0)
+		{
+			api_error(SN_API_CALL_BAD_PARAMETER, 'id is not a number');
+		}
+
+		$q = $db->query(sprintf("SELECT id,filename,md5 FROM wads WHERE id=%d", $id));
+
+		if ($q->num_rows < 1)
+		{
+			api_error(SN_API_CALL_BAD_PARAMETER, 'id is not a valid WAD id');
+		}
+
+		$o = $q->fetch_object();
+
+		if (user_info()->userlevel < UL_ADMINISTRATOR && $o->owner != $_SESSION['id'])
+		{
+			api_error(SN_FORBIDDEN, 'You do not have access to this operation.');
+		}
+
+		Header("Content-Type: text/json");
+		echo json_encode(array(
+			'id'		=>	intval($o->id),
+			'filename'	=>	$o->filename,
+			'md5'		=>	$o->md5
+		));
 	}
 ?>

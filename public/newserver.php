@@ -20,25 +20,68 @@
 		</style>
 
 		<script>
+			var wads = [];
+			var optwads = [];
+
 			function nv(n) {
 				return $('[name="' + n + '"]').val();
 			}
 
 			function getPostArguments() {
 				return {
-					'binary':		nv('binary'),
-					'hostname':		nv('hostname'),
-					'iwad':			nv('iwad'),
-					'gamemode':		nv('gamemode'),
-					'instagib':		$('[name="instagib"]').checked(),
-					'buckshot':		$('[name="buckshot"]').checked(),
-					'skill':		nv('skill'),
-					'dmflags':		nv('dmflags'),
-					'dmflags2':		nv('dmflags2'),
-					'zadmflags':	nv('zadmflags'),
-					'compatflags':	nv('compatflags'),
-					'zacompatflags':nv('zacompatflags')
+					'binary':			nv('binary'),
+					'hostname':			nv('hostname'),
+					'iwad':				nv('iwad'),
+					'gamemode':			nv('gamemode'),
+					'instagib':			$('[name="instagib"]').checked(),
+					'buckshot':			$('[name="buckshot"]').checked(),
+					'buckshot':			$('[name="stdata"]').checked(),
+					'skill':			nv('skill'),
+					'dmflags':			nv('dmflags'),
+					'dmflags2':			nv('dmflags2'),
+					'zadmflags':		nv('zadmflags'),
+					'compatflags':		nv('compatflags'),
+					'zacompatflags':	nv('zacompatflags')
 				}
+			}
+
+			function createServer() {
+				$.post('/api/server.php', getPostArguments())
+				.done(function(d) {
+
+				});
+			}
+
+			function wadInfo(id, callback) {
+				$.post('/api/wads.php', {
+					'fn':		'info',
+					'id':		id
+				})
+				.done(function(d) {
+					callback(d);
+				});
+			}
+
+			function addWad(w) {
+				if (wads.includes(w.filename)) return;
+				if (optwads.includes(w.filename)) {
+					alert('This file is already an optional WAD.');
+					return;
+				}
+
+				$('#wadstable').append('<tr><td style="vertical-align:middle"><a href="javascript:deleteWad(' + w.id + ');" title="Delete"><img src="/images/delete.svg" /></td><td style="vertical-align:middle">' + w. filename + '</td></tr>');
+				wads.push(w.filename);
+			}
+
+			function addOptwad(w) {
+				if (optwads.includes(w.filename)) return;
+				if (wads.includes(w.filename)) {
+					alert('This file is already a required WAD.');
+					return;
+				}
+
+				$('#optwadstable').append('<tr><td style="vertical-align:middle"><a href="javascript:deleteOptwad(' + w.id + ');" title="Delete"><img src="/images/delete.svg" /></td><td style="vertical-align:middle">' + w. filename + '</td></tr>');
+				optwads.push(w.filename);
 			}
 		</script>
 		<!-- tables for formatting like it's pre-html5 baby -->
@@ -123,10 +166,12 @@
 				</td>
 				<td style='width:25%'>
 					<strong>WADs</strong>
+					<table id='wadstable'></table>
 					<?php wad_selection_box('addWad'); ?>
 
 					<br/>
 					<strong>Optional WADs</strong>
+					<table id='optwadstable'></table>
 					<?php wad_selection_box('addOptwad'); ?>
 
 					<label>

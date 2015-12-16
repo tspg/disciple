@@ -32,8 +32,6 @@
 		<link href='/assets/fe.css' rel='stylesheet' type='text/css' />
 
 		<meta name='theme-color' content='#B71C1C' />
-
-		<meta name='viewport' content='width=device-width, initial-scale=1.0' />
 	</head>
 	<body>
 		<header id='main'>
