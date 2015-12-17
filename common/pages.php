@@ -63,6 +63,16 @@
 			</nav>
 		</header>
 ";
+
+			if (!isset($_COOKIE['okcookie']))
+			{
+				echo "
+					<div id='shittyeucookienoticebar'>
+						<a href='javascript:acceptCookies();'><img src='/images/clear.svg' style='width:16px;height:16px'/></a>
+						This site uses cookies to remember your identity.
+					</div>
+				";
+			}
 		}
 	}
 

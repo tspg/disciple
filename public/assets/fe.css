@@ -199,3 +199,15 @@ table a:link, table a:visited {
 .ul {
 	text-decoration: underline;
 }
+
+#shittyeucookienoticebar {
+	background: rgba(211, 47, 47, 0.75);
+	color: #FFF;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding: 5px;
+	font-size: 16pt;
+	display: none;
+}
