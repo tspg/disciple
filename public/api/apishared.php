@@ -36,15 +36,22 @@
 	}
 
 	if (!function_exists('api_checkarg_post')) {
-		function api_checkarg_post($arg) {
+		function api_checkarg_post($arg, $default = '_____default') {
 			if(!isset($_POST[$arg]))
 			{
-				if ($arg == 'fn')
-					api_error(SN_NO_API_CALL, 'No call was specified in the request.');
-				else
-					api_error(SN_API_CALL_BAD_PARAMETER, 'Missing POST argument "' . $arg . '"');
+				if ($default == '_____default')
+				{
+					if ($arg == 'fn')
+						api_error(SN_NO_API_CALL, 'No call was specified in the request.');
+					else
+						api_error(SN_API_CALL_BAD_PARAMETER, 'Missing POST argument "' . $arg . '"');
 
-				exit();
+					exit();
+				}
+				else
+				{
+					return $default;
+				}
 			}
 
 			return $_POST[$arg];

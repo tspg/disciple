@@ -25,7 +25,7 @@
 		// Server ID. This is defined in __construct.
 		protected $id;
 
-		protected $stdinfile;
+		protected $pipes;
 		protected $stdoutfile;
 		protected $stderrfile;
 
@@ -34,6 +34,7 @@
 		protected $process;
 
 		protected $db;
+
 
 		function __construct(
 								$binary, $wads, $optwads, $iwad, $hostname,
@@ -44,7 +45,8 @@
 
 								// Optional stuff
 								$id 			= null,
-								$owner			= -1
+								$owner			= -1,
+								$pipes			= array()
 							)
 		{
 			$this->binary			= $binary;
@@ -65,10 +67,11 @@
 			$this->zadmflags		= $zadmflags;
 			$this->compatflags 		= $compatflags;
 			$this->zacompatflags	= $zacompatflags;
+			$this->pipes			= $pipes;
 
 			if ($id == null)
 			{
-				$this->id 				= sha256(time() + $owner + $skill + ($stdata ? 1 : 0) + ($instagib ? 1 : 0) + ($buckshot ? 1 : 0)  + $dmflags + $dmflags2 + $zadmflags + $compatflags + $zacompatflags + mt_rand());
+				$this->id 				= hash('sha256', time() + $owner + $skill + ($stdata ? 1 : 0) + ($instagib ? 1 : 0) + ($buckshot ? 1 : 0)  + $dmflags + $dmflags2 + $zadmflags + $compatflags + $zacompatflags + mt_rand());
 			}
 			else
 			{
@@ -86,15 +89,15 @@
 		{
 			$d = json_decode($json);
 
-			if ($d->save)
-			{
-				$id = null;
-				$owner = -1;
-			}
-			else
+			$id = null;
+			$owner = -1;
+			$pipes = array();
+
+			if (!$d->save)
 			{
 				$id = $d->id;
 				$owner = $d->owner;
+				$pipes = $d->pipes;
 			}
 
 			return new Server(
@@ -116,7 +119,8 @@
 				$d->compatflags,
 				$d->zacompatflags,
 				$id,
-				$owner
+				$owner,
+				$pipes
 			);
 		}
 
@@ -144,7 +148,7 @@
 				'owner'				=>	$this->owner
 			);
 
-			if (!save)
+			if (!$save)
 			{
 				$a['id']				=	$this->id;
 
@@ -152,10 +156,19 @@
 				// We don't import them as they're generated with the ID.
 				$a['stdoutfile']		= 	$this->stdoutfile;
 				$a['stderrfile']		=	$this->stderrfile;
-				$a['stdinfile']			=	$this->stdinfile;
 			}
 
-			return json_encode($a);
+			$s = json_encode($a);
+			if ($s === FALSE)
+			{
+				echo json_last_error();
+				echo json_last_error_msg();
+				exit();
+			}
+			else
+			{
+				return $s;
+			}
 		}
 
 		protected function generate_command_line()
@@ -237,31 +250,40 @@
 
 		public function start()
 		{
+			$this->owner = $_SESSION['id'];
+
+			if (!file_exists($this->stdinfile))
+			{
+				touch($this->stdinfile);
+			}
+
 			$dsp = array(
-				0 => array('file', $this->stdinfile, 'a'),
+				0 => array('file', $this->stdinfile, 'r'),
 				1 => array('file', $this->stdoutfile, 'a'),
 				2 => array('file', $this->stderrfile, 'a'),
 			);
 
-			$this->process = proc_open($this->generate_command_line(), $dsp, $pipes);
-			add_to_database();
+			$this->process = proc_open($this->generate_command_line(), $dsp, $this->pipes);
+			$this->add_to_database();
+
+			var_dump($this->to_json());
 		}
 
 		protected function add_to_database()
 		{
-			$db->query(sprintf("INSERT INTO servers (sid, owner, json) VALUES('%s', %d, '%s')",
-								$this->id, $this->owner, $db->real_escape_string($this->to_json())));
+			$this->db->query(sprintf("INSERT INTO servers (sid, owner, json) VALUES('%s', %d, '%s')",
+								$this->id, $this->owner, $this->db->real_escape_string($this->to_json())));
 		}
 
 		public function save()
 		{
-			$db->query(sprintf("INSERT INTO savedservers (owner, json) VALUES(%d, '%s')",
-								$this->owner, $db->real_escape_string($this->to_json(true))));
+			$this->db->query(sprintf("INSERT INTO savedservers (owner, json) VALUES(%d, '%s')",
+								$this->owner, $this->db->real_escape_string($this->to_json(true))));
 		}
 
 		public function send($command)
 		{
-			$f = fopen($this->stdinfile, 'w');
+			$f = fopen($this->pipes[0], 'w');
 			fwrite($f, $command . '\n');
 			fclose($f);
 		}
@@ -270,6 +292,7 @@
 		{
 			$this->send(sprintf('kickall "%s"', $reason));
 			$this->send('exit');
+			$db->query("DELETE FROM `servers` WHERE `sid`='$this->id'");
 		}
 
 		public static function get_by_id($sid)

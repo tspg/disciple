@@ -27,26 +27,29 @@
 				return $('[name="' + n + '"]').val();
 			}
 
-			function getPostArguments() {
+			function getPostArguments(fn) {
 				return {
+					'fn':				fn,
 					'binary':			nv('binary'),
 					'hostname':			nv('hostname'),
 					'iwad':				nv('iwad'),
 					'gamemode':			nv('gamemode'),
-					'instagib':			$('[name="instagib"]').checked(),
-					'buckshot':			$('[name="buckshot"]').checked(),
-					'buckshot':			$('[name="stdata"]').checked(),
+					'instagib':			$('[name="instagib"]').is(':checked'),
+					'buckshot':			$('[name="buckshot"]').is(':checked'),
+					'stdata':			$('[name="stdata"]').is(':checked'),
 					'skill':			nv('skill'),
 					'dmflags':			nv('dmflags'),
 					'dmflags2':			nv('dmflags2'),
 					'zadmflags':		nv('zadmflags'),
 					'compatflags':		nv('compatflags'),
-					'zacompatflags':	nv('zacompatflags')
+					'zacompatflags':	nv('zacompatflags'),
+					'wads':				wads,
+					'optwads':			optwads
 				}
 			}
 
 			function createServer() {
-				$.post('/api/server.php', getPostArguments())
+				$.post('/api/server.php', getPostArguments('create'))
 				.done(function(d) {
 
 				});
