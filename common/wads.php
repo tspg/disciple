@@ -73,18 +73,18 @@
 						{
 							if (user_info()->userlevel >= UL_ADMINISTRATOR || $uploader == $_SESSION['id'])
 							{
-								echo "<a href='javascript:deleteWad($id);' title='Delete'><img src='/images/delete.svg' alt='Delete' /></a>";
+								echo "<a href='javascript:deleteWad($id);' title='Delete'><i class='material-icons'>delete</i></a>";
 							}
 
 							if (user_info()->userlevel >= UL_ADMINISTRATOR)
 							{
 								if ($db->query("SELECT * FROM `wadbans` WHERE `md5`='" . $o->md5 . "'")->num_rows == 0)
 								{
-									echo "<a href='javascript:banWad($id);' title='Ban'><img src='/images/nah.svg' alt='Ban' /></a>";
+									echo "<a href='javascript:banWad($id);' title='Ban'><i class='material-icons'>not_interested</i></a>";
 								}
 								else
 								{
-									echo "<a href='javascript:unbanWad($id);' title='Unban'><img src='/images/tick.svg' alt='Unban' /></a>";
+									echo "<a href='javascript:unbanWad($id);' title='Unban'><i class='material-icons'>done</i></a>";
 								}
 							}
 						}

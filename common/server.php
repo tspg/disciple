@@ -23,7 +23,7 @@
 		protected $zacompatflags 	=	0;
 
 		// Server ID. This is defined in __construct.
-		protected $id;
+		public	  $id;
 
 		protected $pipes;
 		protected $stdoutfile;
@@ -265,8 +265,6 @@
 
 			$this->process = proc_open($this->generate_command_line(), $dsp, $this->pipes);
 			$this->add_to_database();
-
-			var_dump($this->to_json());
 		}
 
 		protected function add_to_database()

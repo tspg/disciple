@@ -26,7 +26,7 @@
 		<script src='/assets/jqueryui.js'></script>
 		<script src='/assets/fe.js'></script>
 
-		<link href='//fonts.googleapis.com/css?family=Roboto|Roboto+Mono' rel='stylesheet' type='text/css' />
+		<link href='//fonts.googleapis.com/css?family=Roboto|Roboto+Mono|Material+Icons' rel='stylesheet' type='text/css' />
 		<link href='/assets/jqueryui.css' rel='stylesheet' type='text/css' />
 		<link href='/assets/shared.css' rel='stylesheet' type='text/css' />
 		<link href='/assets/fe.css' rel='stylesheet' type='text/css' />

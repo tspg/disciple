@@ -28,7 +28,6 @@
 
 		$binary = disciple_json()->main_binary;
 		$iwad = data_dir('/iwads/') . $iwad . '.wad';
-		echo $iwad;
 		$s = new server(
 			$binary, $wads, $optwads, $iwad, $hostname, false, $gamemode, '', $skill,
 			$stdata, $instagib, $buckshot, $dmflags, $dmflags2, $zadmflags,
@@ -37,6 +36,6 @@
 
 		$s->start();
 
-		echo 1;
+		echo "1 " . $s->id;
 	}
 ?>

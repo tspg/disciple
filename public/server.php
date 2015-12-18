@@ -1,6 +1,25 @@
 <?php
 	include dirname(dirname(__FILE__)) . '/common/pages.php';
-	include dirname(dirname(__FILE__)) . '/config/config.php';
+	include dirname(dirname(__FILE__)) . '/common/config.php';
+
+	if (!isset($_GET['sid']) || !is_authed())
+	{
+		//Header("Location: /");
+		exit();
+	}
+
+	if (empty($_GET['sid']))
+	{
+		//Header("Location: /");
+		exit();
+	}
+
+	$s = $_GET['sid'];
+
+	$db = getsql();
+
+	$q = $db->query(sprintf("SELECT * FROM `servers` WHERE `sid`='%s'",
+							$s));
 ?>
 
 <?php sn_page_header('Manage Server'); ?>

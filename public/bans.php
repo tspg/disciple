@@ -105,7 +105,7 @@
 						{
 							if ($ul >= UL_ADMINISTRATOR)
 							{
-								echo "<a href='javascript:unbanWad($w->id);' title='Unban'><img src='/images/tick.svg' alt='Unban' /></a>";
+								echo "<a href='javascript:unbanWad($w->id);' title='Unban'><i class='material-icons'>done</i></a>";
 							}
 						}
 					?>

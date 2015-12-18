@@ -51,7 +51,12 @@
 			function createServer() {
 				$.post('/api/server.php', getPostArguments('create'))
 				.done(function(d) {
+					var split = d.split(' ');
+					var code = split.shift();
 
+					if (code == 1) {
+						document.location = '/server/' + split[0];
+					}
 				});
 			}
 
@@ -187,7 +192,7 @@
 				<td></td>
 				<td style='text-align:right'>
 					<input type='button' value='Save' />
-					<input type='button' value='Create and Start Server' />
+					<input type='button' value='Create and Start Server' onclick='createServer()' />
 				</td>
 			</tr>
 		</table>

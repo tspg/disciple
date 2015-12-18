@@ -27,7 +27,27 @@
 					{
 						echo "<div style='width: 100%; text-align: center'>You don't have any running servers.<br />Use the <em>Create Server</em> button above to start one.</div>";
 					}
-				?>
+					else
+					{
+?>
+						<table>
+							<tr>
+								<th></th>
+								<th>Hostname</th>
+							</tr>
+<?php						foreach ($userv as $v)
+							{
+?>								<tr>
+									<td><a href='/server/<?=$v->id;?>'><i class='material-icons'>edit</i></a></td>
+									<td><?=$v->hostname;?></td>
+								</tr>
+<?php
+							}
+?>
+						</table>
+<?php
+					}
+?>
 			</div>
 		<?php
 			}
