@@ -8,7 +8,7 @@
 
 <?php setup_header('Configuration'); ?>
 	<div class='centre'>
-		<img src='../images/d_log1.png' id='wiz' />
+		<img src='../images/d_log1.png' id='wiz' onclick='rotateWizard();stopRotate = true'/>
 		<h3 style='margin:0'>Don't forget your stuff</h3>
 		<br />
 

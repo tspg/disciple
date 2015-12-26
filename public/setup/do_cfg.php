@@ -34,10 +34,9 @@
 	$db->query(sprintf("INSERT INTO `users` (username, password, serverlimit, activated, imported, userlevel) VALUES ('%s', '%s', 65565, 1, 0, %d)",
 						$db->real_escape_string($rootuser),
 						// We use a cost of 14 for the password hash to be compatible with BestBot.
-						password_hash($rootpass, PASSWORD_BCRYPT, array('cost' => 14), UL_OPERATOR)));
+						password_hash($rootpass, PASSWORD_BCRYPT, array('cost' => 14)), UL_OPERATOR));
 
 	data_dir('/wads/');
-	symlink(data_dir('/wads/'), dirname(dirname(__FILE__)) . '/wads');
 
 	Header("Content-Type: text/plain");
 	echo 1;
